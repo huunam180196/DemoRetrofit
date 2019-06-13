@@ -14,6 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -28,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private AnswerAdapter mAdapter;
     private String js;
     private TextView textView;
+    private ArrayList<Result> resultsList = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,35 +52,38 @@ public class MainActivity extends AppCompatActivity {
 
     public void loadAnswers() {
 
-        service.getAnswers("Bearer 3DWIXBZtq64ZxZJv1rgfViqu-C9PjjNttYPf").enqueue(new Callback<ResponseBody>() {
+        service.getAnswers("Bearer Ve7enip-XkylygJ7e1DX-oL23B037rRTG6XB").enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     js=response.body().string();
-                    Log.d("11111111111 ",js);
                     JSONObject obj = new JSONObject(js);
-                    Log.d("11111111111 ", String.valueOf(obj.getJSONArray("result")));
-
                     String resultObject= String.valueOf(obj.getJSONArray("result"));
 
                     JSONArray jsonArray=new JSONArray(resultObject);
-                    int i=jsonArray.length();
 
-                    Log.d("22222222222 ", obj.getString("result"));
-                    Log.d("11111111111 ", String.valueOf(i));
 
-                    textView=(TextView)findViewById(R.id.tv_name);
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonobject = jsonArray.getJSONObject(i);
 
-                    List<Result>list;
-                    for (int j=0;j<jsonArray.length();j++){
+                        String id = jsonobject.getString("id");
+                        String first_name = jsonobject.getString("first_name");
+                        String lastName =jsonobject.getString("lastName");
+                        String email =jsonobject.getString("email");
+                        String phone =jsonobject.getString("phone");
+                        String website =jsonobject.getString("website");
 
+                        addData(id,first_name,lastName,email,phone,website);
                     }
 
-
-
+//                    textView=(TextView)findViewById(R.id.tv_name);
+//                    for (int j=0;j<jsonArray.length();j++){
+//                        jsonArray.getJSONObject(j);
+//
+//                    }
 
                 } catch (IOException | JSONException e) {
-                    e.printStackTrace();
+                    Log.d("erorrrrrr ",e.getMessage());
                 }
             }
 
@@ -104,9 +110,10 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 
-
-
-
+    }
+    public void addData(String id,String first_name,String lastName,String email,String phone,String website){
+        Result result=new Result(id,first_name,lastName,email,phone,website);
+        resultsList.add(result);
     }
 //public void ParseJSON{
 //

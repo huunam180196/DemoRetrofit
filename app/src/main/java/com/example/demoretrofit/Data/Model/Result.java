@@ -39,6 +39,9 @@ public class Result {
     @Expose
     private Links links;
 
+    public Result() {
+    }
+
     public Result(String id, String firstName, String lastName, String email, String phone, String website) {
         this.id = id;
         this.firstName = firstName;
