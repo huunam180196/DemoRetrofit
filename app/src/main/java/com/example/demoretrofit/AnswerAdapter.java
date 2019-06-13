@@ -3,6 +3,7 @@ package com.example.demoretrofit;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +11,10 @@ import android.widget.TextView;
 
 import com.example.demoretrofit.Data.Model.Result;
 
+import java.util.ArrayList;
 import java.util.List;
 public class AnswerAdapter extends RecyclerView.Adapter<AnswerAdapter.Viewholder> {
-    private List<Result>mresult;
+    private List<Result> mresult;
     private Context context;
     private PostItemListener mPostItemListener;
     public class Viewholder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -52,7 +54,8 @@ public class AnswerAdapter extends RecyclerView.Adapter<AnswerAdapter.Viewholder
     public void onBindViewHolder(@NonNull Viewholder viewholder, int i) {
         Result result=mresult.get(i);
         TextView tv=viewholder.textView;
-        tv.setText(result.getFirstName());
+        tv.setText((CharSequence) result);
+
     }
     public void updateAnswers(List<Result> result) {
         mresult = result;
